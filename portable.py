@@ -7,7 +7,7 @@ try:
     socket.connect((host, port))
     print("Client connecté !")
     
-    data = "Bonjour à toi, je suis le client ! :)"
+    data = "Bonjour à toi, je suis le portable ! :)"
     data = data.encode("utf8")
     socket.sendall(data)
         
