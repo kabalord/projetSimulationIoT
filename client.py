@@ -13,6 +13,7 @@ try:
         
     reponse = socket.recv(1024)
     print(reponse)
+
 except ConnectionRefusedError:
     print("Connexion au serveur échouée")
 
