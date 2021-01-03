@@ -1,35 +1,35 @@
+from concurrent.futures import ThreadPoolExecutor
 import socket
-import time 
-import threading
+import logging
+import time
 
-#threading
-class ThreadForClient(threading.Thread):
-    def __init__(self, conn):
-        threading.Thread.__init__(self)
-        self.conn = conn
-        
-    def run(self):
-        data = f"The time is {time.time()}"
-        data = data.encode("utf8")
-        conn.sendall(data)
-        data = conn.recv(1024)
-        data = data.decode("utf8")
-        print(data)
-        
-
+logging.basicConfig(level=logging.DEBUG, format='%(threadName)s: %(message)s')
 #connection
 host, port = ('', 5566)
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.bind((host, port))
 socket.listen(5)
-print("le serveur est démarré !")
 
-while True:	
+def run():
+    data = f"The time is {time.time()}"
+    data = data.encode("utf8")
+    conn.sendall(data)
+    data = conn.recv(1024)
+    data = data.decode("utf8")
+    print(data)
+
+if __name__ == '__main__':
+     executor = ThreadPoolExecutor(max_workers=5)
+     logging.info("le serveur est démarré !")
+     
+#threading
+while True:    
     conn, address = socket.accept()
     print(f"Un client vient de se connecter depuis {address}")
     
-    my_thread = ThreadForClient(conn)
-    my_thread.start()
+    executor.submit(run)
 
 conn.close()
 socket.close()
+        
+
