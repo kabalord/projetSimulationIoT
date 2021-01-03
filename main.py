@@ -1,6 +1,6 @@
 from configuration import *
-from connection import *
-from tasks import *
+from conexion import *
+from taches import *
 
 
 def main():

@@ -1,4 +1,4 @@
-from bully import *
+from principal import *
 
 def getTaskSocket(my_ip_port,leader_ip_port,leader_time):
     context = zmq.Context()
