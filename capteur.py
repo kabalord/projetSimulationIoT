@@ -13,16 +13,15 @@ if __name__ == '__main__':
     
     try:
         socket.connect((host, port))    
-        logging.info("Portable connecté !")
+        logging.info("Client connecté !")
         
         time.sleep(1)
         data = f"The time is {time.time()}"
         data = data.encode("utf8")
-        socket.sendall(data)
         
-        data = input("demander info au serveur : ")
+        data = input("envoyer un message : ")
         data = data.encode("utf8")
-        
+        socket.sendall(data)
         
             
         data = socket.recv(1024)

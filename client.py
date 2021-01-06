@@ -1,21 +1,41 @@
-import socket 
+from concurrent.futures import ThreadPoolExecutor
+import socket
+import logging
+import time
 
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host, port = ('', 5566)
+logging.basicConfig(level=logging.DEBUG, format='%(threadName)s: %(message)s')
 
-try:
-    socket.connect((host, port))
-    print("Client connecté !")
-    
-    data = "Bonjour à toi, je suis le client ! :)"
-    data = data.encode("utf8")
-    socket.sendall(data)
+if __name__  == '__main__':
+    id = "1"
+    counter = 0
+    leader = id
+    executor = ThreadPoolExecutor(max_workers=5)
+    socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    host, port = ('', 7777)
+
+    try:
+        socket.connect((host, port))    
+        logging.info("Client connecté !")
+
+        while True: 
+        	if counter == 0:
+        		data = id
+        		socket.sendall(data.encode("utf8"))
+        		counter = 1
+        	if counter == 1:
+        		msg = socket.recv(1024)
+        		print(f"le serveur a répondu :  {msg.decode()}")
+        		if msg.decode() < leader:
+        			leader = msg.decode()
+        		if msg.decode() > leader and leader == id:
+        			data = id
+        			socket.sendall(data.encode("utf8"))
+
+          
         
-    reponse = socket.recv(1024)
-    print(reponse)
-
-except ConnectionRefusedError:
-    print("Connexion au serveur échouée")
-
-finally:
-    socket.close()
+  
+    except ConnectionRefusedError:
+        print("Connexion au serveur échouée")
+    
+    finally:
+        socket.close()
